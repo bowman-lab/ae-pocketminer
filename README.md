@@ -1,14 +1,3 @@
----
-title: AE-PocketMiner
-emoji: 🧬
-colorFrom: teal
-colorTo: blue
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
----
-
 # AE-PocketMiner — Cryptic Pocket & Allosteric Coupling Prediction
 
 An AI method for simultaneously predicting cryptic binding pockets and their 
@@ -16,7 +5,7 @@ allosteric coupling to the rest of the protein from a single input structure,
 using an attention-enabled Geometric Vector Perceptron graph neural network.
 
 <p align="center">
-  <img src="docs/imgs/model_archt.png" width="700" alt="AE-PocketMiner model architecture"/>
+  <img src="docs/imgs/model_archt.png" width="400" alt="AE-PocketMiner model architecture"/>
   <br/>
   <em>Figure 1. AE-PocketMiner model architecture.</em>
 </p>
@@ -25,47 +14,47 @@ using an attention-enabled Geometric Vector Perceptron graph neural network.
 
 ## Table of contents
 
-- [Web interface](#web-interface)
-- [Local prediction](#local-prediction)
 - [Installation](#installation)
+- [Local prediction](#local-prediction)
 - [Training](#training)
 - [Training data](#training-data)
-- [Attribution](#attribution--original-work)
+- [Background](#background)
 - [Citation](#citation)
 - [License](#license)
 
 ---
 
-## Web interface
+## Installation
 
-The easiest way to run AE-PocketMiner is through the Hugging Face web app —
-no installation required.
+We provide a tested conda environment file. With
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) or
+[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) installed,
+run:
 
-Upload any PDB file (crystal structure, AlphaFold model, or simulation
-snapshot) and get back:
+```bash
+# Clone the repository
+git clone https://github.com/your-org/ae-pocketminer.git
+cd ae-pocketminer
 
-| Output | Description |
-|---|---|
-| **Interactive 3D viewer** | Structure coloured blue→white→red by per-residue pocket probability, rotatable in the browser |
-| **Per-residue probability chart** | Hover any bar to highlight that residue in the 3D view |
-| `output.pdb` | Input PDB with B-factors replaced by cryptic pocket probability × 100 (ready for PyMOL / VMD) |
-| `preds.npy` | Per-residue probability array, shape `(1, n_residues)` |
-| `attention.npy` | Attention weight matrix encoding allosteric coupling, shape `(n_residues, n_residues)` |
+# Create and activate the environment (mamba is faster than conda)
+mamba env create -f environment.yml   # or: conda env create -f environment.yml
+conda activate pocketminer
+```
+
+If you run into issues, also check the installation notes in the
+[original PocketMiner repository](https://github.com/Mickdub/gvp/tree/pocket_pred).
 
 ---
 
 ## Local prediction
 
-If you prefer to run predictions on your own machine — for example on a batch
-of structures or on a compute cluster — use `xtal_predict.py` directly.
+Place your PDB file(s) in the `inputs/` folder and run `xtal_predict.py`
+directly.
 
 ```bash
-# Place your PDB file(s) in the inputs/ folder
 mkdir -p inputs results
-
 cp your_protein.pdb inputs/
 
-# Run prediction
 python src/xtal_predict.py
 ```
 
@@ -73,7 +62,8 @@ Output files are written to `results/`:
 - `results/your_protein-preds.npy` — per-residue pocket probabilities
 - `results/your_protein-attention_weights.npy` — attention weight matrix
 
-To write a PDB with B-factors set to pocket probability (for PyMOL visualisation):
+To write a PDB with B-factors set to pocket probability (for PyMOL
+visualisation):
 
 ```bash
 python src/write_bfactor_pdb.py \
@@ -84,43 +74,76 @@ python src/write_bfactor_pdb.py \
 
 ---
 
-## Installation
-
-> *Full instructions coming soon.*
-
----
-
 ## Training
 
-> *Full training guide coming soon.*
+AE-PocketMiner was retrained in two phases, mirroring the approach used in
+the original PocketMiner paper:
+
+**Phase 1 — LIGSITE labels**
+
+```bash
+python src/train_xtal_predictor.py
+```
+
+This trains the base model using LIGSITE-derived labels from crystal
+structures. Training data arrays (X and y) are loaded from `data/task2/` as
+numpy `.npy` files, following the same format as the original repo.
+
+**Phase 2 — fpocket refinement**
+
+```bash
+python src/train_fpocket_drug_score_labels.py
+```
+
+This fine-tunes the Phase 1 checkpoint using fpocket druggability score
+labels, which incorporate both pocket geometry and chemical environment. The
+model is switched to the new labelling scheme after several initial epochs,
+consistent with the two-stage training strategy described in the PocketMiner
+paper.
+
+Model weights are saved to `models/`.
 
 ---
 
 ## Training data
 
-> *Dataset download instructions coming soon.*
+Training data are stored as numpy arrays under `data/`, using the same
+conventions as the original PocketMiner repository:
+
+```
+data/
+  task2/
+    X-train-*.npy        # structure/trajectory references for LIGSITE training
+    y-train-*.npy        # LIGSITE pocket labels
+    X-train-fpocket-*.npy   # structure references for fpocket training
+    y-train-fpocket-*.npy   # fpocket druggability score labels
+  pm-dataset/
+    *.csv / *.txt        # PocketMiner benchmark dataset labels and PDB IDs
+```
 
 ---
 
-## Attribution & original work
+## Background
 
-This work builds on the infrastructure provided by **PocketMiner**, developed 
-by the [Bowman Lab](https://bowmanlab.seas.upenn.edu), while introducing a 
-newly developed predictive model with expanded training data, a modified 
-network architecture with attention, and additional functionality for 
-allosteric residue prediction.
+AE-PocketMiner is a new model developed in the Bowman Lab that predicts both
+cryptic binding pockets and allosteric coupling from a single protein
+structure. It uses the GVP-GNN from PocketMiner as a protein embedding
+backbone — chosen for its proven performance in pocket prediction — and adds
+an attention mechanism to capture long-range residue–residue dependencies.
+For full details on the architecture, training data, and benchmarking, see our
+paper: https://doi.org/10.64898/2026.05.21.726899
+
+The GVP source files in `src/` are adapted from the original PocketMiner
+codebase with modifications to incorporate the attention layers. For the
+original model and GVP-GNN methodology, see:
+
+**Original PocketMiner repository:**
+👉 https://github.com/Mickdub/gvp/tree/pocket_pred
 
 > Meller, A., Ward, M., Borowsky, J. *et al.* Predicting locations of cryptic 
 > pockets from single protein structures using the PocketMiner graph neural 
 > network. *Nature Communications*, 14, 1177 (2023).
 > https://doi.org/10.1038/s41467-023-36699-3
-
-**Original repository:** 
-👉 https://github.com/Mickdub/gvp/tree/pocket_pred
-
-The GVP model source files in `src/` are copied from that repository.
-For retraining, benchmarking, or understanding the full methodology,
-please refer to the original repo.
 
 ---
 
