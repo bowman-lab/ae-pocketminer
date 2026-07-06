@@ -1,0 +1,70 @@
+# ------TRAINING PARAMETERS----- #
+NUM_EPOCHS: 20
+# number of proteins
+BATCH_SIZE: 1
+residue_batches: True
+NUMBER_RESIDUES_PER_BATCH: 32 #4
+
+LEARNING_RATE: 0.00002
+
+# whether using sidechain info
+use_tensors: False
+
+# Training scheme params
+balance_classes: False
+weight_loss: False
+weight_globally: False
+oversample: False
+undersample: False
+constant_size_balanced_sets: False
+
+# prev training
+continue_previous_training: False
+
+# can be edited to automate
+train_on_intermediates: True
+# ----------------------------- #
+
+# ------- LIGSITE INPUT PARAMETERS ---- #
+featurization_method: 'gp-to-nearest-resi-procedure'
+min_rank: 7
+window: 40
+stride: 1
+pos_thresh: 20
+# ----END LIGSITE INPUT PARAMETERS ---- #
+
+# ------- GVP INPUT PARAMETERS ---- #
+DROPOUT_RATE: 0.1
+HIDDEN_DIM: 100
+NUM_LAYERS: 4
+NUM_HEADS: 2
+
+# use_attention=True -> AE-PocketMiner (this config)
+# use_attention=False -> original PocketMiner architecture
+use_attention: True
+# saves attention_weights.npy at prediction time (train=False)
+save_attention_weights: False
+# optional custom filename/path for the saved attention weights (only used
+# when save_attention_weights=True); defaults to 'attention_weights.npy'
+# attention_weights_filename: 'attention_weights.npy'
+# -----END GVP INPUT PARAMETERS ---- #
+
+# ------- GENERAL DATA PATHS ---- #
+# Root of this repo's data/ folder (repo-relative; adjust if running from
+# somewhere other than src/)
+data_dir: '../data/'
+# Only needed if use_tensors or use_lm is True
+precomputed_dir: '../data/'
+
+# Larger training-data variant: more proteins, VP35 removed.
+# '' would fall back to the original PocketMiner training data instead.
+# See src/datasets.py for the full list of available suffixes.
+train_data_suffix: '_plus_36prots_fah_rmVP35'
+# -----END GENERAL DATA PATHS ---- #
+
+xtal_val_ids: '../data/pm-dataset/val_apo_ids_with_chainids.npy'
+val_label_dicts: '../data/pm-dataset/val_label_dictionary.npy'
+test_ids: '../data/pm-dataset/test_apo_ids_with_chainids.npy'
+test_label_dicts: '../data/pm-dataset/test_label_dictionary.npy'
+# result dir -- MAKE SURE this is a correct path!!!
+base_path: '../models/phase1_bigdataset_attn'
