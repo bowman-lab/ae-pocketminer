@@ -27,13 +27,13 @@ using an attention-enabled Geometric Vector Perceptron graph neural network.
 ## Installation
 
 We provide a tested conda environment file. With
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html) or
-[Mambaforge](https://github.com/conda-forge/miniforge#mambaforge) installed,
+**Miniconda** or
+**Mambaforge** installed,
 run:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/ae-pocketminer.git
+git clone https://github.com/bowman-lab/ae-pocketminer.git
 cd ae-pocketminer
 
 # Create and activate the environment (mamba is faster than conda)
@@ -48,7 +48,9 @@ If you run into issues, also check the installation notes in the
 
 ## Local prediction
 
-Place your PDB file(s) in the `inputs/` folder and run `xtal_predict.py`
+For most users, we recommend trying the [PocketMiner web interface](https://pocket-miner-ui.azurewebsites.net/) first — no installation required. *(Note: this currently serves the original PocketMiner model; a version pointing to AE-PocketMiner is coming soon.)*
+
+To run predictions locally instead, place your PDB file(s) in the `inputs/` folder and run `xtal_predict.py`
 directly.
 
 ```bash
@@ -85,8 +87,8 @@ the original PocketMiner paper:
 python src/train_xtal_predictor.py
 ```
 
-This trains the base model using LIGSITE-derived labels from crystal
-structures. Training data arrays (X and y) are loaded from `data/task2/` as
+This trains the base model using LIGSITE-derived labels from sampled
+structures. Training data arrays (X and Y) are loaded from `data/task2/` as
 numpy `.npy` files, following the same format as the original repo.
 
 **Phase 2 — fpocket refinement**
@@ -96,10 +98,8 @@ python src/train_fpocket_drug_score_labels.py
 ```
 
 This fine-tunes the Phase 1 checkpoint using fpocket druggability score
-labels, which incorporate both pocket geometry and chemical environment. The
-model is switched to the new labelling scheme after several initial epochs,
-consistent with the two-stage training strategy described in the PocketMiner
-paper.
+labels, which incorporate both pocket geometry and chemical environment.
+See the PocketMiner paper for further details.
 
 Model weights are saved to `models/`.
 
