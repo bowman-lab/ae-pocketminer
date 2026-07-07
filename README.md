@@ -84,7 +84,7 @@ python src/find_key_attention_residues.py \
     --output-pdb results/aepocketminer/your_protein-attn_Bfactor.pdb
 ```
 
-You can also use PocketMiner instead of AE-PocketMiner in these scripts to generate predictions. The only difference is that PocketMiner predicts per-residue cryptic pocket probabilities only, with no allosteric predictions (i.e., no `attention_weights.npy` is generated).
+You can also use PocketMiner instead of AE-PocketMiner in these scripts to generate predictions. The key **practical difference** is that PocketMiner predicts per-residue cryptic pocket probabilities only, with no allosteric predictions (i.e., no `attention_weights.npy` is generated).
 
 ---
 
