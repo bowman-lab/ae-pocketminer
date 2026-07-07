@@ -1,0 +1,49 @@
+# ------TRAINING PARAMETERS----- #
+NUM_EPOCHS: 10
+BATCH_SIZE: 1
+residue_batches: True
+NUMBER_RESIDUES_PER_BATCH: 32 # 4
+
+LEARNING_RATE: 0.00001
+
+use_tensors: False
+
+continue_previous_training: True
+previous_nn_dir: '/Path/to/trainedfromligsite/'
+# ----------------------------- #
+
+# ------- FPOCKET FEATURIZATION PARAMETERS ---- #
+feat_type: max
+stride: 5
+window: 40
+cutoff: 0.3
+# ----END FPOCKET FEATURIZATION PARAMETERS ---- #
+
+# ------- GVP INPUT PARAMETERS ---- #
+DROPOUT_RATE: 0.1
+HIDDEN_DIM: 100
+NUM_LAYERS: 4
+NUM_HEADS: 2
+
+# Must match the previous checkpoint above
+use_attention: False
+# -----END GVP INPUT PARAMETERS ---- #
+
+# ------- GENERAL DATA PATHS ---- #
+# Root of this repo's data/ folder (repo-relative; adjust if running from
+# somewhere other than src/)
+data_dir: '../data/'
+# Only needed if use_tensors or use_lm is True
+precomputed_dir: '../data/'
+
+# '' -> original PocketMiner training data (this config).
+# See src/datasets.py for the full list of available suffixes, e.g.
+# '_plus_36prots_fah_rmVP35' for the larger AE-PocketMiner training set.
+train_data_suffix: ''
+
+xtal_val_ids: '../data/pm-dataset/val_apo_ids_with_chainids.npy'
+val_label_dicts: '../data/pm-dataset/val_label_dictionary.npy'
+test_ids: '../data/pm-dataset/test_apo_ids_with_chainids.npy'
+test_label_dicts: '../data/pm-dataset/test_label_dictionary.npy'
+# result dir -- MAKE SURE this is a correct path!!!
+base_path: '../models/phase1_original_no_attention'
