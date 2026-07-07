@@ -13,18 +13,14 @@ from validate_performance_on_xtals import process_strucs
 from util import load_checkpoint
 
 
+# NEED TO CHANGE HERE or GIVE YAML CONFIG FILE
 DEFAULT_CONFIG = {
-    'nn_path': '../models/ligsite_bigdataset_attention/'
-               'aepocketminer',
+    'nn_path': '../models/aepocketminer', # path to the trained model checkpoint
     'input_pdb_directory': 'inputs',
     'output_directory': 'results/aepocketminer',
     'use_attention': True,
-    'num_heads': 2,
-    'dropout_rate': 0.1,
-    'num_layers': 4,
-    'hidden_dim': 100,
-    'save_attention_weights': True,
-    'attention_weights_filename': 'attention_weights.npy',
+    # 'save_attention_weights': True, # can be modified if needed
+    # 'attention_weights_filename': 'attention_weights.npy', # can be modified if needed
     'debug': False,
 }
 
@@ -58,20 +54,26 @@ if __name__ == '__main__':
     else:
         config = DEFAULT_CONFIG
 
-    nn_path = config['nn_path']
+    #--- INPUT/OUTPUT DIRECTORIES ---
     INPUT_PDB_DIRECTORY = config.get('input_pdb_directory', 'inputs')
     OUTPUT_DIRECTORY = config.get('output_directory', 'results')
     debug = config.get('debug', False)
 
-    NUM_HEADS = config.get('num_heads', 2)
-    DROPOUT_RATE = config.get('dropout_rate', 0.1)
-    NUM_LAYERS = config.get('num_layers', 4)
-    HIDDEN_DIM = config.get('hidden_dim', 100)
+    # --- MODEL HYPERPARAMETERS ---
+    DROPOUT_RATE = 0.1
+    NUM_LAYERS = 4
+    HIDDEN_DIM = 100
+    NN_PATH = config['nn_path'] # path to the trained model checkpoint
 
     # --- ATTENTION ---
     USE_ATTENTION = config.get('use_attention', True)
-    SAVE_ATTENTION_WEIGHTS = config.get('save_attention_weights', USE_ATTENTION)
-    ATTENTION_WEIGHTS_FILENAME = config.get('attention_weights_filename', 'attention_weights.npy')
+    NUM_HEADS = 2 if USE_ATTENTION else None # will not be used if USE_ATTENTION is False
+    SAVE_ATTENTION_WEIGHTS = config.get('save_attention_weights', USE_ATTENTION) and USE_ATTENTION
+    # If only one PDB is provided, the attention weights filename could be
+    # specified in the config. For simplicity, we use the same filename for
+    # all PDBs here, and move/rename it after each prediction.
+    ATTENTION_WEIGHTS_FILENAME = config.get('attention_weights_filename', 'attention_weights.npy')\
+          if USE_ATTENTION else None
 
     os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
@@ -90,7 +92,7 @@ if __name__ == '__main__':
     # Load model checkpoint ONCE, outside the per-file loop
     print("Loading trained checkpoint...", flush=True)
     opt = tf.keras.optimizers.Adam()
-    load_checkpoint(model, opt, nn_path)
+    load_checkpoint(model, opt, NN_PATH)
 
     print(f'Processing the PDB dataset in {INPUT_PDB_DIRECTORY} ...', flush=True)
     for filename in os.listdir(INPUT_PDB_DIRECTORY):

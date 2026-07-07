@@ -19,10 +19,10 @@ numbers, this script:
 Usage:
     python src/find_key_attention_residues.py \\
         --pdb inputs/9m1h-chainA-rmHOH-rmPGE2.pdb \\
-        --attention-weights results/.../9m1h-chainA-rmHOH-rmPGE2-attention_weights.npy \\
+        --attention-weights results/aepocketminer/9m1h-chainA-rmHOH-rmPGE2-attention_weights.npy \\
         --pocket-resnums 10 14 15 \\
         --top-n 40 \\
-        --output-pdb results/.../9m1h-chainA-rmHOH-rmPGE2-attn_Bfactor.pdb
+        --output-pdb results/aepocketminer/9m1h-chainA-rmHOH-rmPGE2-attn_Bfactor.pdb
 """
 
 import argparse

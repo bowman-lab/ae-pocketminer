@@ -61,24 +61,20 @@ if __name__ == '__main__':
     # of them from the command line instead of editing this file, e.g.:
     #   python src/make_pdb.py --pdb-name 9m1h-chainA-rmHOH-rmPGE2
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--model-name', default='aepocketminer',
-                         help='subfolder of results/ that predictions were written to '
-                              '(must match the output_directory used in xtal_predict.py)')
     parser.add_argument('--pdb-name', default='XXXX',
                          help='basename (no extension) of the PDB in inputs/ and of the '
-                              '*-preds.npy file in results/{model_name}/')
+                              '*-preds.npy file in results-dir/')
     parser.add_argument('--input-dir', default='inputs',
                          help='directory containing the source PDB file')
-    parser.add_argument('--results-dir', default=None,
+    parser.add_argument('--results-dir', default='results',
                          help='directory containing {pdb_name}-preds.npy; '
-                              'defaults to results/{model_name}/')
+                              '(e.g. results, results/aepocketminer, results/pocketminer)')
     parser.add_argument('--output-pdb', default=None,
                          help='path to write the output PDB to; defaults to '
-                              'results/{model_name}/{pdb_name}_B-factor.pdb')
+                              '{results_dir}/{pdb_name}-Bfactor.pdb')
     args = parser.parse_args()
 
-    results_dir = args.results_dir or f'results/{args.model_name}'
-
+    results_dir = args.results_dir 
     path_to_pdb = f'{args.input_dir}/{args.pdb_name}.pdb'
     pred_file_path = f'{results_dir}/{args.pdb_name}-preds.npy'
     output_fname = args.output_pdb or f'{results_dir}/{args.pdb_name}-Bfactor.pdb'

@@ -1,4 +1,4 @@
-name: pocketminer
+name: aepocketminer
 channels:
   - conda-forge
   - defaults

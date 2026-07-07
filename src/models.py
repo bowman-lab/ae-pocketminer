@@ -22,7 +22,7 @@ class MQAModel(Model):
         # --- ATTENTION ---
         # use_attention=False reproduces the original PocketMiner model exactly.
         # use_attention=True adds attention, i.e. AE-PocketMiner.
-        use_attention=False, attention_heads=1,
+        use_attention=False, attention_heads=2,
         # if True, save the attention weights of the last prediction batch to
         # disk (only applies when train=False and use_attention=True)
         save_attention_weights=False,
