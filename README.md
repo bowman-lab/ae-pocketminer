@@ -54,13 +54,13 @@ For most users, we recommend trying the [PocketMiner web interface](https://pock
 To run predictions locally instead, place your PDB file(s) in the `inputs/` folder and run `xtal_predict.py` directly.
 
 ```bash
-mkdir -p inputs results/aepocketminer
+mkdir -p inputs 
 cp your_protein.pdb inputs/
 
 python src/xtal_predict.py
 ```
 
-Output files are written to `results/aepocketminer/`:
+Output files are written to `results/aepocketminer/`(default):
 - `results/*/your_protein-preds.npy` — per-residue pocket probabilities
 - `results/*/your_protein-attention_weights.npy` — attention weight matrix (N x N)
 
