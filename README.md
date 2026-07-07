@@ -49,7 +49,7 @@ since the package dependencies are essentially the same.
 
 ## Local prediction
 
-For most users, we recommend trying the [PocketMiner web interface](https://pocket-miner-ui.azurewebsites.net/) first — no installation required. *(**Note**: this currently serves the PocketMiner model; a version pointing to AE-PocketMiner is coming soon.)*
+For most users, we recommend trying the [PocketMiner web interface](https://pocketminer.azurewebsites.net/) first — no installation required. *(**Note**: this currently serves the PocketMiner model; a version pointing to AE-PocketMiner is coming soon.)*
 
 To run predictions locally instead, place your PDB file(s) in the `inputs/` folder and run `xtal_predict.py` directly.
 
