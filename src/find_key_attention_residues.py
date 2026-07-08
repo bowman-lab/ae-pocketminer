@@ -131,11 +131,13 @@ def print_top_residues(scores, excluded_inds, res_ids, top_n):
 
     print(f"\nExcluded residues (pocket residues + immediate neighbors): "
           f"{sorted(res_ids[excluded_inds].tolist())}")
-    print(f"\nTop {top_n} residues by attention score:")
-    for resnum, score in zip(res_ids[top_inds], scores[top_inds]):
-        print(f"  residue {resnum:>5d}   score {score:.6f}")
+    # print(f"\nTop {top_n} residues by attention score:")
+    # for resnum, score in zip(res_ids[top_inds], scores[top_inds]):
+    #     print(f"  residue {resnum:>5d}   score {score:.6f}")
+    top_resnums = res_ids[top_inds]
+    print(f"\nTop {top_n} residues by attention score:{top_resnums}")
 
-    return res_ids[top_inds], scores[top_inds]
+    return top_resnums, scores[top_inds]
 
 
 def write_bfactor_pdb(pdb_path, res_ids, scores, excluded_inds, exclude_value, output_pdb):
@@ -206,5 +208,25 @@ if __name__ == '__main__':
     attn = load_attention_weights(args.attention_weights, n_residues=len(res_ids))
 
     scores, excluded_inds = compute_key_residue_scores(attn, res_ids, args.pocket_resnums)
-    print_top_residues(scores, excluded_inds, res_ids, args.top_n)
+    top_resnums, top_scores = print_top_residues(scores, excluded_inds, res_ids, args.top_n)
     write_bfactor_pdb(args.pdb, res_ids, scores, excluded_inds, args.exclude_value, output_pdb)
+    
+    # excluded_inds = pocket residues + their immediate sequence neighbors;
+    # split these back apart so pocket and adjacent_residues can be
+    # selected/colored separately in PyMOL
+    adjacent_only_resnums = sorted(
+        r for r in res_ids[excluded_inds].tolist() if r not in set(args.pocket_resnums)
+    )
+
+    pocket_sel = '+'.join(str(r) for r in args.pocket_resnums)
+    adjacent_sel = '+'.join(str(r) for r in adjacent_only_resnums)
+    allosteric_sel = '+'.join(str(r) for r in top_resnums)
+    max_score = float(np.max(top_scores)) if len(top_scores) else 0.0
+
+    print('\nConsider running the following commands in PyMOL for visualization:')
+    print(f'    load {output_pdb}, prot')
+    print(f'    select pocket, resi {pocket_sel}')
+    print(f'    select adjacent_residues, resi {adjacent_sel}')
+    print(f'    select allosteric, resi {allosteric_sel}')
+    print( '    color gray70, adjacent_residues')
+    print(f'    spectrum b, blue_white_red, prot and not pocket and not adjacent_residues, minimum=0, maximum={max_score:.3f}')
