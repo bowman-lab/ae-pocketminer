@@ -21,9 +21,9 @@ from util import load_checkpoint
 #     # /path/to/ae-pocketminer/models/aepocketminer 
 #     'input_pdb_directory': 'inputs',
 #     'output_directory': 'results/aepocketminer',
-#     'use_attention': True,
-#     # 'save_attention_weights': True, # can be modified if needed
-#     # 'attention_weights_filename': 'attention_weights.npy', # can be modified if needed
+#     'use_attention': True, # True = AE-PocketMiner, False = PocketMiner
+#     # 'save_attention_weights': True, # will save attention weights to a .npy file in the output directory if use_attention is True
+#     # 'attention_weights_filename': 'attention_weights.npy', # can be changed to a different filename
 #     'debug': False,
 # }
 

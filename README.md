@@ -58,7 +58,7 @@ cp your_protein.pdb inputs/
 python src/xtal_predict.py src/example_config.yaml
 ```
 
-Output files are written to `results/aepocketminer/`(default):
+Output files are written to `results/aepocketminer/`:
 - `results/*/your_protein-preds.npy` — per-residue pocket probabilities (1 x N)
 - `results/*/your_protein-attention_weights.npy` — attention weight matrix (N x N)
 
@@ -82,7 +82,12 @@ python src/find_key_attention_residues.py \
     --output-pdb results/aepocketminer/your_protein-attn_Bfactor.pdb
 ```
 
-You can also use PocketMiner instead of AE-PocketMiner in these scripts to generate predictions. The key **practical difference** is that PocketMiner predicts per-residue cryptic pocket probabilities only, with no allosteric predictions (i.e., no `attention_weights.npy` is generated).
+You can also use PocketMiner instead of AE-PocketMiner in these scripts to generate predictions. The key **practical difference** is that PocketMiner predicts per-residue cryptic pocket probabilities only, with no allosteric predictions (i.e., no `attention_weights.npy` is generated). To do so, use the following settings in `src/example_config.yaml`:
+
+```yaml
+nn_path: /path/to/ae-pocketminer/models/pocketminer
+use_attention: false  
+```
 
 ---
 
