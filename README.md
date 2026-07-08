@@ -59,7 +59,7 @@ python src/xtal_predict.py
 ```
 
 Output files are written to `results/aepocketminer/`(default):
-- `results/*/your_protein-preds.npy` — per-residue pocket probabilities
+- `results/*/your_protein-preds.npy` — per-residue pocket probabilities (1 x N)
 - `results/*/your_protein-attention_weights.npy` — attention weight matrix (N x N)
 
 To write a PDB with B-factors set to pocket probability (for PyMOL
