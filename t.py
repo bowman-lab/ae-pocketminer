@@ -15,10 +15,7 @@ from util import load_checkpoint
 
 # NEED TO CHANGE HERE or GIVE YAML CONFIG FILE
 DEFAULT_CONFIG = {
-    'nn_path': '/mnt/pure/bowmanlab/sizhang/repos/ae-pocketminer/models/aepocketminer',
-    # Absolute path to the trained model checkpoint.
-    # After downloading the ae-pocketminer repo, update this to:
-    # /path/to/ae-pocketminer/models/aepocketminer 
+    'nn_path': '/mnt/pure/bowmanlab/sizhang/repos/ae-pocketminer/models/aepocketminer', # path to the trained model checkpoint
     'input_pdb_directory': 'inputs',
     'output_directory': 'results/aepocketminer',
     'use_attention': True,

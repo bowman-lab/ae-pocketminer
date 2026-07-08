@@ -26,10 +26,8 @@ using an attention-enabled Geometric Vector Perceptron graph neural network.
 
 ## Installation
 
-We provide a tested conda environment file. With
-**Miniconda** or
-**Mambaforge** installed,
-run:
+We provide a tested conda environment file, which requires Linux and a GPU. 
+With **Miniconda** or **Mambaforge** installed, run:
 
 ```bash
 # Clone the repository
@@ -37,7 +35,7 @@ git clone https://github.com/bowman-lab/ae-pocketminer.git
 cd ae-pocketminer
 
 # Create and activate the environment (mamba is faster than conda)
-mamba env create -f environment.yml   # or: conda env create -f environment.yml
+mamba env create -f environment.yml   # will take 5-10 mins
 conda activate aepocketminer
 ```
 
