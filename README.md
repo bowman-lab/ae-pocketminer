@@ -86,7 +86,7 @@ You can also use PocketMiner instead of AE-PocketMiner in these scripts to gener
 
 ```yaml
 nn_path: /path/to/ae-pocketminer/models/pocketminer
-use_attention: false  
+use_attention: False  
 ```
 
 ---
