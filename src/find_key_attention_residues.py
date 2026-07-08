@@ -224,4 +224,4 @@ if __name__ == '__main__':
     print(f'    select excluded, resi {excluded_sel}')
     print(f'    select allosteric, resi {allosteric_sel}')
     print( '    color gray70, excluded')
-    print(f'    spectrum b, blue_white_red, prot and not excluded, minimum=0, maximum={max_score:.3f}')
+    print(f'    spectrum b, blue_white_red, prot and not excluded, minimum=0, maximum={max_score*100:.1f}')
