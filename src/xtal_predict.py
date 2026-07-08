@@ -111,6 +111,12 @@ if __name__ == '__main__':
     # all PDBs here, and move/rename it after each prediction.
     ATTENTION_WEIGHTS_FILENAME = config.get('attention_weights_filename', 'attention_weights.npy')\
           if USE_ATTENTION else None
+    
+    # Check for potential mismatch between the model checkpoint and the attention setting
+    if 'pocketminer' in NN_PATH.lower() and 'aepocketminer' not in NN_PATH.lower() and USE_ATTENTION:
+        print("WARNING: nn_path appears to point to a PocketMiner checkpoint, but "
+              "use_attention=True. PocketMiner was trained without attention layers; "
+              "any attention_weights.npy produced will be meaningless.", flush=True)
 
     os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 
