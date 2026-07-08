@@ -114,7 +114,7 @@ if __name__ == '__main__':
     
     # Check for potential mismatch between the model checkpoint and the attention setting
     if 'pocketminer' in NN_PATH.lower() and 'aepocketminer' not in NN_PATH.lower() and USE_ATTENTION:
-        print("WARNING: nn_path appears to point to a PocketMiner checkpoint, but "
+        print("\nWARNING: nn_path appears to point to a PocketMiner checkpoint, but "
               "use_attention=True. PocketMiner was trained without attention layers; "
               "any attention_weights.npy produced will be meaningless.", flush=True)
 
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     )
 
     # Load model checkpoint ONCE, outside the per-file loop
-    print("Loading trained checkpoint...", flush=True)
+    print("\nLOADING TRAINED CHECKPOINT...", flush=True)
     opt = tf.keras.optimizers.Adam()
     load_checkpoint(model, opt, NN_PATH)
 
