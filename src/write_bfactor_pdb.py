@@ -82,4 +82,4 @@ if __name__ == '__main__':
     make_bfactor_pdb(path_to_pdb, pred_file_path, output_fname)
     print('\nConsider running the following commands in PyMOL for visualization:')
     print(f'    load {output_fname}, prot')
-    print('    spectrum b, blue_white_red, prot, minimum=0.3, maximum=0.8')
+    print('    spectrum b, blue_white_red, prot, minimum=0.5, maximum=0.8')
