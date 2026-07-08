@@ -13,19 +13,19 @@ from models import MQAModel
 from util import load_checkpoint
 
 
-# NEED TO CHANGE HERE or GIVE YAML CONFIG FILE
-DEFAULT_CONFIG = {
-    'nn_path': '/mnt/pure/bowmanlab/sizhang/repos/ae-pocketminer/models/aepocketminer',
-    # Absolute path to the trained model checkpoint.
-    # After downloading the ae-pocketminer repo, update this to:
-    # /path/to/ae-pocketminer/models/aepocketminer 
-    'input_pdb_directory': 'inputs',
-    'output_directory': 'results/aepocketminer',
-    'use_attention': True,
-    # 'save_attention_weights': True, # can be modified if needed
-    # 'attention_weights_filename': 'attention_weights.npy', # can be modified if needed
-    'debug': False,
-}
+# # NEED TO CHANGE HERE or GIVE YAML CONFIG FILE
+# DEFAULT_CONFIG = {
+#     'nn_path': '/mnt/pure/bowmanlab/sizhang/repos/ae-pocketminer/models/aepocketminer',
+#     # Absolute path to the trained model checkpoint.
+#     # After downloading the ae-pocketminer repo, update this to:
+#     # /path/to/ae-pocketminer/models/aepocketminer 
+#     'input_pdb_directory': 'inputs',
+#     'output_directory': 'results/aepocketminer',
+#     'use_attention': True,
+#     # 'save_attention_weights': True, # can be modified if needed
+#     # 'attention_weights_filename': 'attention_weights.npy', # can be modified if needed
+#     'debug': False,
+# }
 
 abbrev = {"ALA" : "A" , "ARG" : "R" , "ASN" : "N" , "ASP" : "D" , "CYS" : "C" , "CYM" : "C", "GLU" : "E" , "GLN" : "Q" , "GLY" : "G" , "HIS" : "H" , "ILE" : "I" , "LEU" : "L" , "LYS" : "K" , "MET" : "M" , "PHE" : "F" , "PRO" : "P" , "SER" : "S" , "THR" : "T" , "TRP" : "W" , "TYR" : "Y" , "VAL" : "V"}
 lookup = {'C': 4, 'D': 3, 'S': 15, 'Q': 5, 'K': 11, 'I': 9, 'P': 14, 'T': 16, 'F': 13, 'A': 0, 'G': 7, 'H': 8, 'E': 6, 'L': 10, 'R': 1, 'W': 17, 'V': 19, 'N': 2, 'Y': 18, 'M': 12}

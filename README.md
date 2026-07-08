@@ -55,7 +55,7 @@ To run predictions locally instead, place your PDB file(s) in the `inputs/` fold
 mkdir -p inputs 
 cp your_protein.pdb inputs/
 
-python src/xtal_predict.py
+python src/xtal_predict.py src/example_config.yaml
 ```
 
 Output files are written to `results/aepocketminer/`(default):

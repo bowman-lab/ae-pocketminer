@@ -1,0 +1,16 @@
+# Config for running xtal_predict.py with (AE-)PocketMiner.
+# Usage: python src/xtal_predict.py path/to/this_file.yaml
+
+# Absolute path to the trained model checkpoint.
+# After downloading the ae-pocketminer repo, update this to:
+# /path/to/ae-pocketminer/models/aepocketminer
+nn_path: /mnt/pure/bowmanlab/sizhang/repos/ae-pocketminer/models/aepocketminer
+
+input_pdb_directory: inputs
+output_directory: results/aepocketminer
+
+use_attention: true
+# save_attention_weights: true              # can be modified if needed
+# attention_weights_filename: attention_weights.npy   # can be modified if needed
+
+debug: false
