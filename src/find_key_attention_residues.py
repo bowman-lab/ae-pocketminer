@@ -145,15 +145,12 @@ def write_bfactor_pdb(pdb_path, res_ids, scores, excluded_inds, exclude_value, o
     the B-factor. Excluded residues (pocket residues + neighbors) get
     `exclude_value` instead, so they stand out distinctly in PyMOL/Chimera.
     """
-    b_factor_by_resnum = dict(zip(res_ids.tolist(), scores.tolist()))
+    score_by_resnum = dict(zip(res_ids.tolist(), scores.tolist()))
     excluded_resnums = set(res_ids[excluded_inds].tolist())
-    for resnum in excluded_resnums:
-        b_factor_by_resnum[resnum] = exclude_value
 
     p = PDBParser(QUIET=True)
     structure = p.get_structure("structure", pdb_path)
 
-    # get only the first chain, matching make_pdb.py's convention
     for chain in structure.get_chains():
         break
 
@@ -162,14 +159,13 @@ def write_bfactor_pdb(pdb_path, res_ids, scores, excluded_inds, exclude_value, o
         if res.get_resname() not in residue_types:
             continue
         resnum = res.get_id()[1]
-        value = b_factor_by_resnum.get(resnum)
-        if value is None:
-            # residue present in the PDB but not in our backbone-derived
-            # res_ids (e.g. missing backbone atoms mdtraj excluded)
-            value = exclude_value
-            n_missing += 1
+        if resnum in excluded_resnums:
+            value = exclude_value                    # sentinel -- write as-is, NOT scaled
+        elif resnum in score_by_resnum:
+            value = score_by_resnum[resnum] * 100    # real score -- scale for B-factor range
         else:
-            value = value * 100  # scale attention scores up for a more usable B-factor/spectrum range
+            value = exclude_value                    # missing-residue fallback -- also not scaled
+            n_missing += 1
         for atom in res.get_atoms():
             atom.set_bfactor(value)
 
